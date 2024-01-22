@@ -4,33 +4,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Check File Modification') {
-            steps {
                 script {
-                    def modifiedFile = 'package.json'
-                    def changeSets = currentBuild.changeSets
-
-                    if (changeSets != null && !changeSets.isEmpty()) {
-                        def changes = changeSets[0].items.collect { it.path }
-
-                        if (changes.contains(modifiedFile)) {
-                            echo "The file $modifiedFile has been modified."
-                            // Add your further steps or actions here
-                        } else {
-                            echo "The file $modifiedFile has not been modified."
-                            // Add alternative steps or actions here
-                        }
-                    } else {
-                        echo "No changes found in this build."
-                    }
+                    // Checkout the code from Git
+                    checkout scm
                 }
             }
         }
 
-        // Add more stages as needed for your pipeline
+        stage('Check Package.json Changes') {
+            steps {
+                script {
+                    // Check if package.json has changed
+                    def changes = checkout([$class: 'GitSCM']).pollingBaseline().polling().getBuildCommits()
+                    def hasPackageJsonChanged = changes.any { it.comment.contains('package.json') }
+
+                    if (hasPackageJsonChanged) {
+                        echo 'Package.json has changed in the current push.'
+                        // Add your further steps here
+                    } else {
+                        echo 'Package.json has not changed in the current push.'
+                        // Add your alternative steps here
+                    }
+                }
+            }
+        }
     }
 }
