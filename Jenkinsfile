@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Run git command to identify changed files
-                    def changedFiles = sh(script: 'git diff --name-only origin/master...HEAD', returnStdout: true).trim()
+                    def changedFiles = sh(script: 'git diff --name-only $CHANGE_ID $CHANGE_TARGET', returnStdout: true).trim()
                     echo "Changed files: ${changedFiles}"
                 }
             }
