@@ -22,6 +22,7 @@ pipeline {
 		    def filetocheck = "package.json"
  		    if (filesArray.contains(filetocheck)){
 			echo "package.json Modified"
+			sh "cdxgen --api-key odt_gZohq6E4J0h63dS66umB3iK3szP0mx84 --server-url http://localhost:8082"
 		} else {
 			echo "Not modified"		
 }
