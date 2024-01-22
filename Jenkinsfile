@@ -11,25 +11,22 @@ pipeline {
             }
         }
 
-        stage('Check Package.json Changes') {
+        stage('Identify Changed Files') {
             steps {
                 script {
-                    // Check if package.json has changed
-                    def changes = script {
-                        return checkout([$class: 'GitSCM']).pollingBaseline().polling().changes
-                    }
-                    
-                    def hasPackageJsonChanged = changes.any { it.filePath.endsWith('package.json') }
-
-                    if (hasPackageJsonChanged) {
-                        echo 'Package.json has changed in the current push.'
-                        // Add your further steps here
-                    } else {
-                        echo 'Package.json has not changed in the current push.'
-                        // Add your alternative steps here
-                    }
+                    // Run git command to identify changed files
+                    def changedFiles = sh(script: 'git diff --name-only origin/master...HEAD', returnStdout: true).trim()
+                    echo "Changed files: ${changedFiles}"
                 }
             }
+        }
+
+        // Add more stages as needed for your build process
+    }
+
+    post {
+        always {
+            // Clean up or perform any post-build actions
         }
     }
 }
