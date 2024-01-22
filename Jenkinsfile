@@ -15,9 +15,9 @@ pipeline {
             steps {
                 script {
                     // Run git command to identify changed files
-                    sh(script: 'printenv')
-		    //def changedFiles = sh(script: 'git diff --name-only origin/master...HEAD -- package.json', returnStdout: true).trim()
-                    //echo "Changed files: ${changedFiles}"
+                    // sh(script: 'printenv')
+		    def changedFiles = sh(script: 'git diff --name-only origin/main...HEAD -- package.json', returnStdout: true).trim()
+                    echo "Changed files: ${changedFiles}"
                 }
             }
         }
