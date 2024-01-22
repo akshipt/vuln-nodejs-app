@@ -15,13 +15,12 @@ pipeline {
             steps {
                 script {
                     // Run git command to identify changed files
-                    def changedFiles = sh(script: 'git diff --name-only $CHANGE_ID $CHANGE_TARGET', returnStdout: true).trim()
+                    def changedFiles = sh(script: 'git diff --name-only $CHANGE_ID $CHANGE_TARGET', returnStdout: true)
                     echo "Changed files: ${changedFiles}"
                 }
             }
         }
 
-        // Add more stages as needed for your build process
     }
 
 }
