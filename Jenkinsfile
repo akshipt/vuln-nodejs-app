@@ -15,8 +15,11 @@ pipeline {
             steps {
                 script {
                     // Check if package.json has changed
-                    def changes = checkout([$class: 'GitSCM']).pollingBaseline().polling().getBuildCommits()
-                    def hasPackageJsonChanged = changes.any { it.comment.contains('package.json') }
+                    def changes = script {
+                        return checkout([$class: 'GitSCM']).pollingBaseline().polling().changes
+                    }
+                    
+                    def hasPackageJsonChanged = changes.any { it.filePath.endsWith('package.json') }
 
                     if (hasPackageJsonChanged) {
                         echo 'Package.json has changed in the current push.'
