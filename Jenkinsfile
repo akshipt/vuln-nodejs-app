@@ -12,14 +12,21 @@ pipeline {
             steps {
                 script {
                     def modifiedFile = 'package.json'
-                    def changes = scm.diffIncludes()
+                    
+                    def changeSet = currentBuild.changeSets.poll()
 
-                    if (changes.contains(modifiedFile)) {
-                        echo "The file $modifiedFile has been modified."
-                        // Add action
+                    if (changeSet != null) {
+                        def changes = changeSet.items.collect { it.path }
+
+                        if (changes.contains(modifiedFile)) {
+                            echo "The file $modifiedFile has been modified."
+                            // Add action
+                        } else {
+                            echo "The file $modifiedFile has not been modified."
+                            // Add action
+                        }
                     } else {
-                        echo "The file $modifiedFile has not been modified."
-                        // Add action
+                        echo "No changes found in this build."
                     }
                 }
             }
