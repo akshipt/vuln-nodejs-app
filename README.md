@@ -2,6 +2,7 @@
 <h1>
   Vulnerable NodeJS Application
 </h1>
+<b>TEST</b>
   
 [![License](https://img.shields.io/badge/license--_red.svg)](https://opensource.org/licenses)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/github.com/payatu/vuln-nodejs-app/issues) 
