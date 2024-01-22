@@ -12,25 +12,24 @@ pipeline {
             steps {
                 script {
                     def modifiedFile = 'package.json'
-                    
-                    def changeSet = currentBuild.changeSets.poll()
+                    def changes = []
 
-                    if (changeSet != null) {
-                        def changes = changeSet.items.collect { it.path }
+                    // Iterate through all changesets
+                    currentBuild.changeSets.each { changeSet ->
+                        changes.addAll(changeSet.items.collect { it.path })
+                    }
 
-                        if (changes.contains(modifiedFile)) {
-                            echo "The file $modifiedFile has been modified."
-                            // Add action
-                        } else {
-                            echo "The file $modifiedFile has not been modified."
-                            // Add action
-                        }
+                    if (changes.contains(modifiedFile)) {
+                        echo "The file $modifiedFile has been modified."
+                        // Add your further steps or actions here
                     } else {
-                        echo "No changes found in this build."
+                        echo "The file $modifiedFile has not been modified."
+                        // Add alternative steps or actions here
                     }
                 }
             }
         }
 
+        // Add more stages as needed for your pipeline
     }
 }
