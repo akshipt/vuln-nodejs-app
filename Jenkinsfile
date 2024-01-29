@@ -22,7 +22,9 @@ pipeline {
 		    def filetocheck = "package.json"
  		    if (filesArray.contains(filetocheck)){
 			echo "package.json Modified"
-			sh "/Users/shivanshswarnkar/.nvm/versions/node/v16.20.2/bin/cdxgen --api-key odt_gZohq6E4J0h63dS66umB3iK3szP0mx84 --server-url http://localhost:8082"
+			//sh "/Users/shivanshswarnkar/.nvm/versions/node/v16.20.2/bin/cdxgen --api-key odt_gZohq6E4J0h63dS66umB3iK3szP0mx84 --server-url http://localhost:8082"
+			sh "cdxgen"
+			sh "grype sbom:./bom.json"
 		} else {
 			echo "Not modified"		
 }
